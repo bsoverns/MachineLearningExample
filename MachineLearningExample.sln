@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineLearningExample", "MachineLearningExample\MachineLearningExample.csproj", "{915BBC26-624C-42A6-8E07-8C4956364275}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiFarePrediction", "TaxiFarePrediction\TaxiFarePrediction.csproj", "{EF176EBD-413B-4974-8F78-55F5521272A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,14 @@ Global
 		{915BBC26-624C-42A6-8E07-8C4956364275}.Release|Any CPU.Build.0 = Release|Any CPU
 		{915BBC26-624C-42A6-8E07-8C4956364275}.Release|x64.ActiveCfg = Release|x64
 		{915BBC26-624C-42A6-8E07-8C4956364275}.Release|x64.Build.0 = Release|x64
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Debug|x64.ActiveCfg = Debug|x64
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Debug|x64.Build.0 = Debug|x64
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Release|x64.ActiveCfg = Release|Any CPU
+		{EF176EBD-413B-4974-8F78-55F5521272A1}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
