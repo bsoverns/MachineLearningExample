@@ -1,7 +1,7 @@
 ﻿using Microsoft.ML.Data;
 using System;
 
-namespace MachineLearningExample
+namespace IrisPrediction
 {
     class IrisData
     {

@@ -6,14 +6,14 @@ using System.IO;
 using System.Security.Permissions;
 using Microsoft.ML;
 
-namespace MachineLearningExample
+namespace IrisPrediction
 {
     internal class Program
     {
         //static readonly string _datapath = Path.Combine(Environment.CurrentDirectory, "Data", "stock.data");
         //static readonly string _modelPath = Path.Combine(Environment.CurrentDirectory, "Data", "StockClusteringModel.zip");
-        static readonly string _datapath = Path.Combine(@"D:\Sandbox\MachineLearningExample\MachineLearningExample\Data", "iris.data");
-        static readonly string _modelPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\MachineLearningExample\Data", "IrisClusteringModel.zip");
+        static readonly string _datapath = Path.Combine(@"D:\Sandbox\MachineLearningExample\IrisPrediction\Data", "iris.data");
+        static readonly string _modelPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\IrisPrediction\Data", "IrisClusteringModel.zip");
 
         static void Main(string[] args)
         {

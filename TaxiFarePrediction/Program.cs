@@ -1,3 +1,4 @@
+﻿//https://learn.microsoft.com/en-us/dotnet/machine-learning/tutorials/
 //https://learn.microsoft.com/en-us/dotnet/machine-learning/tutorials/predict-prices
 
 using System;
@@ -53,7 +54,6 @@ namespace TaxiFarePrediction
                 Console.WriteLine($"*       Root Mean Squared Error:      {metrics.RootMeanSquaredError:#.##}");
             }
 
-
             void TestSinglePrediction(MLContext mlContextTestPrediction, ITransformer modelTestPrediction)
             {
                 var taxiTripSample = new TaxiTrip()
@@ -72,11 +72,10 @@ namespace TaxiFarePrediction
 
                 Console.WriteLine($"**********************************************************************");
                 Console.WriteLine($"Predicted fare: {prediction.FareAmount:0.####}, actual fare: 15.5");
-                Console.WriteLine($"**********************************************************************");                
+                Console.WriteLine($"**********************************************************************");
+                Console.ReadLine();
+                Console.WriteLine("");
             }
-
         }
-
-
     }
 }
