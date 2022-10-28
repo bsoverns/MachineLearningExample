@@ -1,11 +1,9 @@
 ﻿//https://learn.microsoft.com/en-us/dotnet/machine-learning/tutorials/
+//Re-train - https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/retrain-model-ml-net
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.ML;
 using StockPrediction.Classes;
 
@@ -58,18 +56,18 @@ namespace StockPrediction
 
             void TestingPrediction(MLContext mlContextTestPrediction, ITransformer modelTestPrediction)
             {
-                float ActualReading = 46.06f;                
+                float ActualReading = 72.85f;                
 
                 var StockSample = new StockFluctuation()
                 {
 
-                    OpenPrice = 45.92f,
-                    LowPrice = 45.62f,
-                    HighPrice = 46.65f,
-                    //ClosePrice = 0, // To predict. Actual/Observed = 225.09                    
-                    StockHistoryDate = DateTime.Parse("10/26/2021 12:00:00 AM"),
-                    StockTickerId = "PFE",
-                    Volume = 21413029
+                    OpenPrice = 72.53f,
+                    LowPrice = 72.32f,
+                    HighPrice = 73.05f,
+                    ClosePrice = 0, // To predict. Actual/Observed = 225.09                    
+                    StockHistoryDate = DateTime.Parse("10/28/2021 12:00:00 AM"),
+                    StockTickerId = "ATVI",
+                    Volume = 7211493
                 };
 
                 var predictionFunction = mlContext.Model.CreatePredictionEngine<StockFluctuation, StockPredictor>(model);

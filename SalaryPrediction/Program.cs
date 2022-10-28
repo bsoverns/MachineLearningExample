@@ -1,13 +1,10 @@
 ﻿//https://www.youtube.com/watch?v=8gVhJKszzzI&list=PLl_upHIj19Zy3o09oICOutbNfXj332czx
+//Retrain - https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/retrain-model-ml-net
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.ML;
-using Microsoft.ML.Data;
 using SalaryPrediction.Classes;
 
 namespace SalaryPrediction
