@@ -11,7 +11,7 @@ namespace SalesPrediction
         static void Main(string[] args)
         {
             string _trainDataPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalesPrediction\Data", "SalesData.csv");
-            string _testDataPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalesPrediction\Data", "SalesData.csv");
+            string _testDataPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalesPrediction\Data", "SalesData-test.csv");
             string _modelPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalesPrediction\Data", "Model.zip");
 
             MLContext mlContext = new MLContext(seed: 0);
@@ -21,20 +21,26 @@ namespace SalesPrediction
 
             ITransformer Train(MLContext mlContextTrain, string dataPath)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<SalesData>(dataPath, hasHeader: true, separatorChar: ',');
-                var pipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "Amount")
-                    .Append(mlContext.Transforms.Concatenate("Features", "Year", "Month", "Day"))
-                    .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression());
-                    //.Append(mlContext.Regression.Trainers.FastTree());
+                IDataView dataView = mlContextTrain.Data.LoadFromTextFile<SalesData>(dataPath, hasHeader: true, separatorChar: ',');
+                var pipeline = mlContextTrain.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "Amount")
+                    .Append(mlContextTrain.Transforms.Concatenate("Features", "Day"))
+                    //.Append(mlContextTrain.Regression.Trainers.LbfgsPoissonRegression());
+                    .Append(mlContextTrain.Regression.Trainers.FastTree());
 
                 var trainingModel = pipeline.Fit(dataView);
+
+                using (var fileStream = new FileStream(_modelPath, FileMode.Create, FileAccess.Write, FileShare.Write))
+                {
+                    mlContextTrain.Model.Save(trainingModel, dataView.Schema, fileStream);
+                }
+
                 return trainingModel;
             }
 
             void Evaluate(MLContext mlContextEvaluate, ITransformer modelEvalulate)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<SalesData>(_testDataPath, hasHeader: true, separatorChar: ',');
-                var predictions = model.Transform(dataView);
+                IDataView dataView = mlContextEvaluate.Data.LoadFromTextFile<SalesData>(_testDataPath, hasHeader: true, separatorChar: ',');
+                var predictions = modelEvalulate.Transform(dataView);
                 var metrics = mlContext.Regression.Evaluate(predictions, "Label", "Score");
 
                 Console.WriteLine();
@@ -47,8 +53,8 @@ namespace SalesPrediction
 
             void TestPrediction(MLContext mlContextTestPrediction, ITransformer modelTestPrediction)
             {
-                SalesData salesDataSample = new SalesData() { Year = 2022f, Month = 10f, Day = 29f };
-                var predictionFunction = mlContextTestPrediction.Model.CreatePredictionEngine<SalesData, SalesPredictor>(model);
+                SalesData salesDataSample = new SalesData() { Year = 2022, Month = 10, Day = 27 };
+                var predictionFunction = mlContextTestPrediction.Model.CreatePredictionEngine<SalesData, SalesPredictor>(modelTestPrediction);
                 var prediction = predictionFunction.Predict(salesDataSample);
 
                 Console.WriteLine($"**********************************************************************");

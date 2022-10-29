@@ -21,26 +21,26 @@ namespace StockPrediction
 
             ITransformer Train(MLContext mlContextTrain, string dataPath)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<StockFluctuation>(dataPath, hasHeader: true, separatorChar: ',');
-                var pipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "ClosePrice")
-                    //.Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "OpenPriceEncoded", inputColumnName: "OpenPrice"))
-                    //.Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "LowPriceEncoded", inputColumnName: "LowPrice"))
-                    //.Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "HighPriceEncoded", inputColumnName: "HighPrice"))
-                    .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "StockHistoryDateEncoded", inputColumnName: "StockHistoryDate"))
-                    .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "StockTickerIdEncoded", inputColumnName: "StockTickerId"))
-                    .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "VolumeEncoded", inputColumnName: "Volume"))
-                    .Append(mlContext.Transforms.Concatenate("Features", "OpenPrice", "LowPrice", "HighPrice", "StockHistoryDateEncoded", "StockTickerIdEncoded", "VolumeEncoded"))
-                    .Append(mlContext.Regression.Trainers.FastTree());
+                IDataView dataView = mlContextTrain.Data.LoadFromTextFile<StockFluctuation>(dataPath, hasHeader: true, separatorChar: ',');
+                var pipeline = mlContextTrain.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "ClosePrice")
+                    //.Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "OpenPriceEncoded", inputColumnName: "OpenPrice"))
+                    //.Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "LowPriceEncoded", inputColumnName: "LowPrice"))
+                    //.Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "HighPriceEncoded", inputColumnName: "HighPrice"))
+                    .Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "StockHistoryDateEncoded", inputColumnName: "StockHistoryDate"))
+                    .Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "StockTickerIdEncoded", inputColumnName: "StockTickerId"))
+                    .Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "VolumeEncoded", inputColumnName: "Volume"))
+                    .Append(mlContextTrain.Transforms.Concatenate("Features", "OpenPrice", "LowPrice", "HighPrice", "StockHistoryDateEncoded", "StockTickerIdEncoded", "VolumeEncoded"))
+                    .Append(mlContextTrain.Regression.Trainers.FastTree());
 
-                var model1 = pipeline.Fit(dataView);
-                return model1;
+                var modelTrain = pipeline.Fit(dataView);
+                return modelTrain;
             }
 
             void Evaluate(MLContext mlContextEvaluate, ITransformer modelEvalulate)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<StockFluctuation>(_testDataPath, hasHeader: true, separatorChar: ',');
-                var predictions = model.Transform(dataView);
-                var metrics = mlContext.Regression.Evaluate(predictions, "Label", "Score");
+                IDataView dataView = mlContextEvaluate.Data.LoadFromTextFile<StockFluctuation>(_testDataPath, hasHeader: true, separatorChar: ',');
+                var predictions = modelEvalulate.Transform(dataView);
+                var metrics = mlContextEvaluate.Regression.Evaluate(predictions, "Label", "Score");
 
                 Console.WriteLine();
                 Console.WriteLine($"*************************************************");
@@ -67,7 +67,7 @@ namespace StockPrediction
                     Volume = 7211493
                 };
 
-                var predictionFunction = mlContext.Model.CreatePredictionEngine<StockFluctuation, StockPredictor>(model);
+                var predictionFunction = mlContextTestPrediction.Model.CreatePredictionEngine<StockFluctuation, StockPredictor>(modelTestPrediction);
                 var prediction = predictionFunction.Predict(StockSample);               
                 float difference = ActualReading - prediction.ClosePricePrediction;
                 float quotient = (difference/ prediction.ClosePricePrediction) * 100f;
