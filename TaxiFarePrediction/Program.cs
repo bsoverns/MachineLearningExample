@@ -21,23 +21,23 @@ namespace TaxiFarePrediction
 
             ITransformer Train(MLContext mlContextTrain, string dataPath)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<TaxiTrip>(dataPath, hasHeader: true, separatorChar: ',');
-                var pipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "FareAmount")
-                    .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "VendorIdEncoded", inputColumnName: "VendorId"))
-                    .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "RateCodeEncoded", inputColumnName: "RateCode"))
-                    .Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "PaymentTypeEncoded", inputColumnName: "PaymentType"))
-                    .Append(mlContext.Transforms.Concatenate("Features", "VendorIdEncoded", "RateCodeEncoded", "PassengerCount", "TripDistance", "PaymentTypeEncoded"))
-                    .Append(mlContext.Regression.Trainers.FastTree());
+                IDataView dataView = mlContextTrain.Data.LoadFromTextFile<TaxiTrip>(dataPath, hasHeader: true, separatorChar: ',');
+                var pipeline = mlContextTrain.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "FareAmount")
+                    .Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "VendorIdEncoded", inputColumnName: "VendorId"))
+                    .Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "RateCodeEncoded", inputColumnName: "RateCode"))
+                    .Append(mlContextTrain.Transforms.Categorical.OneHotEncoding(outputColumnName: "PaymentTypeEncoded", inputColumnName: "PaymentType"))
+                    .Append(mlContextTrain.Transforms.Concatenate("Features", "VendorIdEncoded", "RateCodeEncoded", "PassengerCount", "TripDistance", "PaymentTypeEncoded"))
+                    .Append(mlContextTrain.Regression.Trainers.FastTree());
 
-                var model1 = pipeline.Fit(dataView);
-                return model1;
+                var modelTrain = pipeline.Fit(dataView);
+                return modelTrain;
             }
 
             void Evaluate(MLContext mlContextEvaluate, ITransformer modelEvalulate)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<TaxiTrip>(_testDataPath, hasHeader: true, separatorChar: ',');
-                var predictions = model.Transform(dataView);
-                var metrics = mlContext.Regression.Evaluate(predictions, "Label", "Score");
+                IDataView dataView = mlContextEvaluate.Data.LoadFromTextFile<TaxiTrip>(_testDataPath, hasHeader: true, separatorChar: ',');
+                var predictions = modelEvalulate.Transform(dataView);
+                var metrics = mlContextEvaluate.Regression.Evaluate(predictions, "Label", "Score");
 
                 Console.WriteLine();
                 Console.WriteLine($"*************************************************");
@@ -60,7 +60,7 @@ namespace TaxiFarePrediction
                     FareAmount = 0 // To predict. Actual/Observed = 15.5
                 };
 
-                var predictionFunction = mlContext.Model.CreatePredictionEngine<TaxiTrip, TaxiTripFarePrediction>(model);
+                var predictionFunction = mlContextTestPrediction.Model.CreatePredictionEngine<TaxiTrip, TaxiTripFarePrediction>(modelTestPrediction);
                 var prediction = predictionFunction.Predict(taxiTripSample);
 
                 Console.WriteLine($"**********************************************************************");
