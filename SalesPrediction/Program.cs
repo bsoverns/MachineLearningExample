@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Microsoft.ML;
+using System;
 using System.IO;
 using System.Linq;
-using Microsoft.ML;
-using SalaryPrediction.Classes;
+using SalesPrediction.Classes;
 
-namespace SalaryPrediction
+namespace SalesPrediction
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
-            string _trainDataPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalaryPrediction\Data", "SalaryData.csv");
-            string _testDataPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalaryPrediction\Data", "SalaryData-test.csv");
-            string _modelPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalaryPrediction\Data", "Model.zip");
+            string _trainDataPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalesPrediction\Data", "SalesData.csv");
+            string _testDataPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalesPrediction\Data", "SalesData.csv");
+            string _modelPath = Path.Combine(@"D:\Sandbox\MachineLearningExample\SalesPrediction\Data", "Model.zip");
 
             MLContext mlContext = new MLContext(seed: 0);
             var model = Train(mlContext, _trainDataPath);
@@ -21,18 +21,19 @@ namespace SalaryPrediction
 
             ITransformer Train(MLContext mlContextTrain, string dataPath)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<SalaryData>(dataPath, hasHeader: true, separatorChar: ',');
-                var pipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "Salary")
-                    .Append(mlContext.Transforms.Concatenate("Features", "YearsExperience"))
+                IDataView dataView = mlContext.Data.LoadFromTextFile<SalesData>(dataPath, hasHeader: true, separatorChar: ',');
+                var pipeline = mlContext.Transforms.CopyColumns(outputColumnName: "Label", inputColumnName: "Amount")
+                    .Append(mlContext.Transforms.Concatenate("Features", "Year", "Month", "Day"))
                     .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression());
+                    //.Append(mlContext.Regression.Trainers.FastTree());
 
-                var model1 = pipeline.Fit(dataView);
-                return model1;
+                var trainingModel = pipeline.Fit(dataView);
+                return trainingModel;
             }
 
             void Evaluate(MLContext mlContextEvaluate, ITransformer modelEvalulate)
             {
-                IDataView dataView = mlContext.Data.LoadFromTextFile<SalaryData>(_testDataPath, hasHeader: true, separatorChar: ',');
+                IDataView dataView = mlContext.Data.LoadFromTextFile<SalesData>(_testDataPath, hasHeader: true, separatorChar: ',');
                 var predictions = model.Transform(dataView);
                 var metrics = mlContext.Regression.Evaluate(predictions, "Label", "Score");
 
@@ -46,12 +47,12 @@ namespace SalaryPrediction
 
             void TestPrediction(MLContext mlContextTestPrediction, ITransformer modelTestPrediction)
             {
-                SalaryData salaryData = new SalaryData { YearsExperience = 7 };
-                var predictionFunction = mlContextTestPrediction.Model.CreatePredictionEngine<SalaryData, SalaryPredictor>(model);
-                var prediction = predictionFunction.Predict(salaryData);
+                SalesData salesDataSample = new SalesData() { Year = 2022f, Month = 10f, Day = 29f };
+                var predictionFunction = mlContextTestPrediction.Model.CreatePredictionEngine<SalesData, SalesPredictor>(model);
+                var prediction = predictionFunction.Predict(salesDataSample);
 
                 Console.WriteLine($"**********************************************************************");
-                Console.WriteLine($"Predicted Closing Price: {prediction.PredictedSalary:0.####}");                
+                Console.WriteLine($"Predicted Sales Amount: {prediction.SalesAmountPrediction:0.####}");
                 Console.WriteLine($"**********************************************************************");
                 Console.ReadLine();
                 Console.WriteLine("");

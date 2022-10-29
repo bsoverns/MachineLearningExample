@@ -1,7 +1,4 @@
-﻿//https://learn.microsoft.com/en-us/dotnet/machine-learning/tutorials/
-//Re-train - https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/retrain-model-ml-net
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using Microsoft.ML;
@@ -72,11 +69,11 @@ namespace StockPrediction
 
                 var predictionFunction = mlContext.Model.CreatePredictionEngine<StockFluctuation, StockPredictor>(model);
                 var prediction = predictionFunction.Predict(StockSample);               
-                float difference = ActualReading - prediction.ClosePrice;
-                float quotient = (difference/ prediction.ClosePrice) * 100f;
+                float difference = ActualReading - prediction.ClosePricePrediction;
+                float quotient = (difference/ prediction.ClosePricePrediction) * 100f;
 
                 Console.WriteLine($"**********************************************************************");
-                Console.WriteLine($"Predicted Closing Price: {prediction.ClosePrice:0.####}, Actual Price: {ActualReading.ToString()} ");
+                Console.WriteLine($"Predicted Closing Price: {prediction.ClosePricePrediction:0.####}, Actual Price: {ActualReading.ToString()} ");
                 Console.WriteLine($"Off by: {difference.ToString()}, or {quotient.ToString()}%");
                 Console.WriteLine($"**********************************************************************");
                 Console.ReadLine();

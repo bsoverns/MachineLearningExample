@@ -1,8 +1,4 @@
-﻿//https://www.datarmatics.com/data-science/ml-net-tutorial-perform-cluster-analysis-using-iris-dataset/
-//https://www.youtube.com/watch?v=oPckdACVhAI
-//Retrain - https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/retrain-model-ml-net
-
-using System;
+﻿using System;
 using System.IO;
 using Microsoft.ML;
 
