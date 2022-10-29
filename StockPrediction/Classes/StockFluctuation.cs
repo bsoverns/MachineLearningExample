@@ -34,6 +34,6 @@ namespace StockPrediction.Classes
     public class StockPredictor
     {
         [ColumnName("Score")]
-        public float ClosePrice;
+        public float ClosePricePrediction;
     }
 }

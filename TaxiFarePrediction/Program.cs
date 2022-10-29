@@ -1,13 +1,6 @@
-﻿//https://learn.microsoft.com/en-us/dotnet/machine-learning/tutorials/
-//https://learn.microsoft.com/en-us/dotnet/machine-learning/tutorials/predict-prices
-
-using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.ML;
 using TaxiFarePrediction.Classes;
 
@@ -61,7 +54,7 @@ namespace TaxiFarePrediction
                     VendorId = "VTS",
                     RateCode = "1",
                     PassengerCount = 1,
-                    TripTime = 1140,
+                    TripTime = 1140f,
                     TripDistance = 3.75f,
                     PaymentType = "CRD",
                     FareAmount = 0 // To predict. Actual/Observed = 15.5
