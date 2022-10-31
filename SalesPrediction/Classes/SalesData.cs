@@ -1,25 +1,26 @@
-﻿using Microsoft.ML.Data;
+﻿using System;
+using Microsoft.ML.Data;
 
 namespace SalesPrediction.Classes
 {
-    public class SalesData
+    internal class SalesData
     {
-        [LoadColumn(0)]
-        public float Year;
+        //[LoadColumn(0)]
+        //public float Year;
+
+        //[LoadColumn(1)]
+        //public float Month;
+
+        //[LoadColumn(3)]
+        //public float Day;
+
+        //[LoadColumn(4)]
+        //public float Amount;
+        [LoadColumn(0)] 
+        public DateTime SalesDate { get; set; }
 
         [LoadColumn(1)]
-        public float Month;
+        public float Amount { get; set; }
 
-        [LoadColumn(3)]
-        public float Day;
-
-        [LoadColumn(4)]
-        public float Amount;
-    }
-
-    public class SalesPredictor
-    {
-        [ColumnName("Score")]
-        public float SalesAmountPrediction;
     }
 }
