@@ -30,14 +30,15 @@ namespace SalesPrediction
             var forecastingEngine = model.CreateTimeSeriesEngine<SalesData, SalesForecast>(context);
             var forecasts = forecastingEngine.Predict();
 
+            Console.WriteLine($"**********************************************************************");
+            Console.WriteLine($"Predicted Sales Amount");
+            Console.WriteLine($"**********************************************************************");
+            
             foreach (var forecast in forecasts.Forecast)
             {
                 Console.WriteLine(forecast);
             }
 
-            Console.WriteLine($"**********************************************************************");
-            Console.WriteLine($"Predicted Sales Amount");
-            Console.WriteLine($"**********************************************************************");
             Console.ReadLine();
             Console.WriteLine("");            
         }
