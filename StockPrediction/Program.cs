@@ -53,18 +53,18 @@ namespace StockPrediction
 
             void TestingPrediction(MLContext mlContextTestPrediction, ITransformer modelTestPrediction)
             {
-                float ActualReading = 72.85f;                
+                float ActualReading = 71.96f;                
 
                 var StockSample = new StockFluctuation()
                 {
 
-                    OpenPrice = 72.53f,
-                    LowPrice = 72.32f,
-                    HighPrice = 73.05f,
+                    OpenPrice = 72.08f,
+                    LowPrice = 71.45f,
+                    HighPrice = 72.34f,
                     ClosePrice = 0, // To predict. Actual/Observed = 225.09                    
-                    StockHistoryDate = DateTime.Parse("10/28/2021 12:00:00 AM"),
+                    StockHistoryDate = DateTime.Parse("11/04/2022 12:00:00 AM"),
                     StockTickerId = "ATVI",
-                    Volume = 7211493
+                    Volume = 4333117
                 };
 
                 var predictionFunction = mlContextTestPrediction.Model.CreatePredictionEngine<StockFluctuation, StockPredictor>(modelTestPrediction);
