@@ -1,0 +1,81 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Sandbox\\MachineLearningExample\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FEDADDF9-F3E1-46DE-83B3-712EE4827701}|StockPrediction\\StockPrediction.csproj|c:\\sandbox\\machinelearningexample\\stockprediction\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FEDADDF9-F3E1-46DE-83B3-712EE4827701}|StockPrediction\\StockPrediction.csproj|solutionrelative:stockprediction\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{511113C8-E232-436F-8F60-8C7A8EAED1F1}|FeedBackAnalysis\\FeedBackAnalysis.csproj|C:\\Sandbox\\MachineLearningExample\\feedbackanalysis\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{511113C8-E232-436F-8F60-8C7A8EAED1F1}|FeedBackAnalysis\\FeedBackAnalysis.csproj|solutionrelative:feedbackanalysis\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{915BBC26-624C-42A6-8E07-8C4956364275}|IrisPrediction\\IrisPrediction.csproj|C:\\Sandbox\\MachineLearningExample\\irisprediction\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{915BBC26-624C-42A6-8E07-8C4956364275}|IrisPrediction\\IrisPrediction.csproj|solutionrelative:irisprediction\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 631,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Sandbox\\MachineLearningExample\\StockPrediction\\Program.cs",
+              "RelativeDocumentMoniker": "StockPrediction\\Program.cs",
+              "ToolTip": "C:\\Sandbox\\MachineLearningExample\\StockPrediction\\Program.cs",
+              "RelativeToolTip": "StockPrediction\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-24T00:14:55.611Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Sandbox\\MachineLearningExample\\FeedBackAnalysis\\Program.cs",
+              "RelativeDocumentMoniker": "FeedBackAnalysis\\Program.cs",
+              "ToolTip": "C:\\Sandbox\\MachineLearningExample\\FeedBackAnalysis\\Program.cs",
+              "RelativeToolTip": "FeedBackAnalysis\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-24T00:14:02.493Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Sandbox\\MachineLearningExample\\IrisPrediction\\Program.cs",
+              "RelativeDocumentMoniker": "IrisPrediction\\Program.cs",
+              "ToolTip": "C:\\Sandbox\\MachineLearningExample\\IrisPrediction\\Program.cs",
+              "RelativeToolTip": "IrisPrediction\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-24T00:13:16Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
