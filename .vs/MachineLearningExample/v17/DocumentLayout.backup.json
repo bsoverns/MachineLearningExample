@@ -59,7 +59,8 @@
               "RelativeToolTip": "FeedBackAnalysis\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-24T00:14:02.493Z"
+              "WhenOpened": "2025-03-24T00:14:02.493Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -71,7 +72,8 @@
               "RelativeToolTip": "IrisPrediction\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-24T00:13:16Z"
+              "WhenOpened": "2025-03-24T00:13:16Z",
+              "EditorCaption": ""
             }
           ]
         }
