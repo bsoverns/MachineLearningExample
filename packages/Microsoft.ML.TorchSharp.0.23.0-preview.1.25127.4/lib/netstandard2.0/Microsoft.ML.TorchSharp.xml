@@ -1,0 +1,1240 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.ML.TorchSharp</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.Anchors">
+            <summary>
+            Anchor boxes are a set of predefined bounding boxes of a certain height and width, whose location and size can be adjusted by the regression head of model.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Anchors.#ctor(System.Int32[],System.Int32[],System.Int32[],System.Double[],System.Double[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.Anchors"/> class.
+            </summary>
+            <param name="pyramidLevels">Pyramid levels.</param>
+            <param name="strides">Strides between adjacent bboxes.</param>
+            <param name="sizes">Different sizes for bboxes.</param>
+            <param name="ratios">Different ratios for height/width.</param>
+            <param name="scales">Scale size of bboxes.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Anchors.forward(TorchSharp.torch.Tensor)">
+            <summary>
+            Generate anchors for an image.
+            </summary>
+            <param name="image">Image in Tensor format.</param>
+            <returns>All anchors.</returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Anchors.GenerateAnchors(System.Int32,System.Double[],System.Double[])">
+            <summary>
+            Generate a set of anchors given size, ratios and scales.
+            </summary>
+            <param name="baseSize">Base size for width and height.</param>
+            <param name="ratios">Ratios for height/width.</param>
+            <param name="scales">Scales to resize base size.</param>
+            <returns>A set of anchors.</returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Anchors.Shift(TorchSharp.torch.Tensor,System.Int32,TorchSharp.torch.Tensor)">
+            <summary>
+            Duplicate and distribute anchors to different positions give border of positions and stride between positions.
+            </summary>
+            <param name="shape">Border to distribute anchors.</param>
+            <param name="stride">Stride between adjacent anchors.</param>
+            <param name="anchors">Anchors to distribute.</param>
+            <returns>The shifted anchors.</returns>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.Attention">
+            <summary>
+            The Attention layer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Attention.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.Attention"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="keyChannels">The key channels.</param>
+            <param name="numHeads">The number of blocks.</param>
+            <param name="attnRatio">The ratio of attention.</param>
+            <param name="windowResolution">The resolution of window.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Attention.forward(TorchSharp.torch.Tensor,TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2">
+            <summary>
+            The object detection network based on AutoFormerV2 backbone which is pretrained only in MS COCO dataset.
+            The network contains 3 scales with different parameters: small for 11MB, medium for 21MB and large for 41MB.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2.#ctor(System.Int32,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},TorchSharp.torch.Device)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2"/> class.
+            </summary>
+            <param name="numClasses">The number of object categories.</param>
+            <param name="embedChannels">The embedding channels, which control the scale of model.</param>
+            <param name="depths">The number of blocks, which control the scale of model.</param>
+            <param name="numHeads">The number of heads, which control the scale of model.</param>
+            <param name="device">The device where the model inference.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2.FreezeBN">
+            <summary>
+            Freeze the weight of BatchNorm2d in network.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2.forward(TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2.InitializeWeight">
+            <summary>
+            Initialize weight of layers in network.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Backbone">
+            <summary>
+            The backbone of AutoFormerV2 object detection network.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Backbone.#ctor(System.Int32,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.Int32},System.Double,System.Double,System.Double,System.Collections.Generic.List{System.Int32},System.Boolean,System.Boolean,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Backbone"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="embedChannels">The embedding channels.</param>
+            <param name="depths">The number of blocks in each layer.</param>
+            <param name="numHeads">The number of heads in BasicLayer.</param>
+            <param name="windowSizes">The sizes of window.</param>
+            <param name="mlpRatio">The ratio of MLP.</param>
+            <param name="dropRate">The ratio of drop.</param>
+            <param name="mbconvExpandRatio">The expand ratio of MBConv.</param>
+            <param name="outIndices">The indices of output.</param>
+            <param name="useShiftWindow">Whether use shift window.</param>
+            <param name="useInterpolate">Whether use interpolation.</param>
+            <param name="outChannels">The channels of each outputs.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Backbone.forward(TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Block">
+            <summary>
+            The block module of AutoFormer network.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Block.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Block"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="numHeads">The number of blocks.</param>
+            <param name="windowSize">The size of window.</param>
+            <param name="shiftSize">The size of shift.</param>
+            <param name="mlpRatio">The ratio of MLP.</param>
+            <param name="dropRatio">The ratio of drop.</param>
+            <param name="localConvSize">The size of local convolution.</param>
+            <param name="useShiftWindow">Whether use shift window.</param>
+            <param name="useInterpolate">Whether use interpolation.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Block.forward(TorchSharp.torch.Tensor,System.Int32,System.Int32,TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Block.WindowsReverse(TorchSharp.torch.Tensor,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Reverse input in window size to original shape.
+            </summary>
+            <param name="windows">The input window tensor.</param>
+            <param name="windowSize">The size of window.</param>
+            <param name="h">The height.</param>
+            <param name="w">The width.</param>
+            <returns>The reversed window tensor.</returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.AutoFormerV2Block.WindowPartition(TorchSharp.torch.Tensor,System.Int32)">
+            <summary>
+            Partition input to window size.
+            </summary>
+            <param name="x">The input tensor.</param>
+            <param name="windowSize">The size of window.</param>
+            <returns>The partition window.</returns>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.BasicLayer">
+            <summary>
+            The basic layer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.BasicLayer.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.BasicLayer"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="outChannels">The output channels.</param>
+            <param name="depth">The number of blocks.</param>
+            <param name="numHeads">The number of heads.</param>
+            <param name="windowSize">The size of window.</param>
+            <param name="mlpRatio">The ratio of MLP.</param>
+            <param name="dropRatio">The ratio of drop.</param>
+            <param name="localConvSize">The size of local convolution.</param>
+            <param name="useShiftWindow">Whether use shift window.</param>
+            <param name="useInterpolate">Whether use interpolation.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.BasicLayer.forward(TorchSharp.torch.Tensor,System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.BasicLayer.WindowPartition(TorchSharp.torch.Tensor,System.Int32)">
+            <summary>
+            Partition input to window size.
+            </summary>
+            <param name="x">The input tensor.</param>
+            <param name="windowSize">The window size.</param>
+            <returns>The output tensor.</returns>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.Conv2dBN">
+            <summary>
+            The Convolution and BN module.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Conv2dBN.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.Conv2dBN"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="outChannels">The output channels.</param>
+            <param name="kernalSize">The kernel size of convolution layer.</param>
+            <param name="stride">The stride of convolution layer.</param>
+            <param name="padding">The padding of convolution layer.</param>
+            <param name="dilation">The dilation of convolution layer.</param>
+            <param name="groups">The groups of convolution layer.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.Conv2dBN.forward(TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.ConvLayer">
+            <summary>
+            The layer of convolution blocks in AutoFormer network.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.ConvLayer.#ctor(System.Int32,System.Int32,System.Int32,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.ConvLayer"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="outChannels">The output channels.</param>
+            <param name="depth">The number of blocks.</param>
+            <param name="convExpandRatio">The expand ratio of convolution layer.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.ConvLayer.forward(TorchSharp.torch.Tensor,System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.ConvModule">
+            <summary>
+            The convolution and activation module.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.ConvModule.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.ConvModule"/> class.
+            </summary>
+            <param name="inChannel">The input channels of convolution layer.</param>
+            <param name="outChannel">The output channels of convolution layer.</param>
+            <param name="kernelSize">The kernel size of convolution layer.</param>
+            <param name="stride">The stride of convolution layer.</param>
+            <param name="padding">The padding of convolution layer.</param>
+            <param name="dilation">The dilation of convolution layer.</param>
+            <param name="bias">The bias of convolution layer.</param>
+            <param name="useRelu">Whether use Relu activation function.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.ConvModule.forward(TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.FPN">
+            <summary>
+            The FPN (Feature Pyramid Networks) layer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.FPN.#ctor(System.Collections.Generic.List{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.FPN"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="outChannel">The output channels.</param>
+            <param name="numOuts">The number of output tensors.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.FPN.forward(System.Collections.Generic.List{TorchSharp.torch.Tensor})">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.MBConv">
+            <summary>
+            The MBConv layer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.MBConv.#ctor(System.Int32,System.Int32,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.MBConv"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="outChannels">The output channels.</param>
+            <param name="expandRatio">The expand ratio.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.MBConv.forward(TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.MLP">
+            <summary>
+            The MLP (Multilayer Perceptron) layer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.MLP.#ctor(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.MLP"/> class.
+            </summary>
+            <param name="inFeatures">The input channels of features.</param>
+            <param name="hiddenFeatures">The hidden layer channels of features.</param>
+            <param name="outFeatures">The output channels of features.</param>
+            <param name="dropRatio">The drop ratio.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.MLP.forward(TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.MAP50">
+            <summary>
+            Gets or sets mAP50 which means mean Average Precision(mAP) under IOU threshold 50%.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.MAP50_95">
+            <summary>
+            Gets or sets mAP , which is the average of mAP from IOU threshold 50% to 95% with step 5%, equaling to the
+            average of mAP50, mAP55, mAP60... and mAP95.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.ObjectLabel.Category">
+            <summary>
+            Gets or sets category for this sample.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.ObjectLabel.Height">
+            <summary>
+            Gets or sets height of bounding box.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.ObjectLabel.Width">
+            <summary>
+            Gets or sets width of bounding box.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.ObjectLabel.Left">
+            <summary>
+            Gets or sets left border of bounding box.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.ObjectLabel.Top">
+            <summary>
+            Gets or sets top border of bounding box.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionMetrics.ObjectLabel.Confidence">
+            <summary>
+            Gets or sets confidence score for model output.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.LabelColumnName">
+            <summary>
+            The label column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.PredictedLabelColumnName">
+            <summary>
+            The label column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.BoundingBoxColumnName">
+            <summary>
+            The Bounding Box column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.PredictedBoundingBoxColumnName">
+            <summary>
+            The Predicted Bounding Box column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.ImageColumnName">
+            <summary>
+            The Image column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.ScoreColumnName">
+            <summary>
+            The Confidence column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.IOUThreshold">
+            <summary>
+            Gets or sets the IOU threshold for removing duplicate bounding boxes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.ScoreThreshold">
+            <summary>
+            Gets or sets the confidenct threshold for bounding box category.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.Steps">
+            <summary>
+            Gets or sets the epoch steps in learning rate scheduler to reduce learning rate.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.MaxEpoch">
+            <summary>
+            Stop training when reaching this number of epochs.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.ValidationSet">
+            <summary>
+            The validation set used while training to improve model quality.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.NumberOfClasses">
+            <summary>
+            Number of classes for the data.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.InitLearningRate">
+            <summary>
+            Gets or sets the initial learning rate in optimizer.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.WeightDecay">
+            <summary>
+            Gets or sets the weight decay in optimizer.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options.LogEveryNStep">
+            <summary>
+            How often to log the loss.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.PatchEmbed">
+            <summary>
+            The PatchEmbed layer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.PatchEmbed.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.PatchEmbed"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="embedChannels">The output channels.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.PatchEmbed.forward(TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.PatchMerging">
+            <summary>
+            The PatchMerging layer.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.PatchMerging.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.PatchMerging"/> class.
+            </summary>
+            <param name="inChannels">The input channels.</param>
+            <param name="outChannels">The output channels.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.PatchMerging.forward(TorchSharp.torch.Tensor,System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.AutoFormerV2.RetinaHead">
+            <summary>
+            The head of RetinaNet.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.RetinaHead.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.AutoFormerV2.RetinaHead"/> class.
+            </summary>
+            <param name="numClasses">The number of classes.</param>
+            <param name="inChannels">The input channels.</param>
+            <param name="stackedConvs">The number of stacked convolution layers.</param>
+            <param name="featChannels">The feature channels.</param>
+            <param name="numBasePriors">The number of base priors.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.AutoFormerV2.RetinaHead.forward(System.Collections.Generic.List{TorchSharp.torch.Tensor})">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.Loss.FocalLoss">
+            <summary>
+            A kind of loss function to balance easy and hard samples.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Loss.FocalLoss.#ctor(System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.ML.TorchSharp.Loss.FocalLoss"/> class.
+            </summary>
+            <param name="alpha">The alpha.</param>
+            <param name="gamma">The gamma.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Loss.FocalLoss.forward(TorchSharp.torch.Tensor,TorchSharp.torch.Tensor,TorchSharp.torch.Tensor,TorchSharp.torch.Tensor)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.BertArchitecture">
+            <summary>
+            Sentence classification model.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.BertTaskType">
+            <summary>
+            These are taken from the TorchSharp model we are implementing.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.Models.NasBertEncoder.PositionalEmbedding">
+            <summary>
+            Null if not using positional embedding.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.Models.NasBertEncoder.SegmentEmbedding">
+            <summary>
+            Null if there is only one segment.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.Models.NasBertEncoder.EmbeddingLayerNorm">
+            <summary>
+            Null if not using layer normalization in embedding.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Models.NasBertEncoder.CheckBlockHiddenSize(System.Int32)">
+            <summary>
+            For each block, check whether all hidden dimensions in hiddenList are the same (except for 0).
+            If all hidden dimensions in one block are 0, it will be set to the last hidden dimension
+            (if exists) or the maximum hidden dimension (if not exist).
+            </summary>
+            <returns>The list of hidden dimensions in blocks.</returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Models.NasBertModel.ExtractFeatures(TorchSharp.torch.Tensor)">
+            <summary>
+            Run only Encoder and return features.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.Modules.GeLUFast">
+            <summary>
+            See https://arxiv.org/pdf/1606.08415.pdf:
+            y = 0.5x * (1 + tanh(sqrt(2/Pi) * (x + 0.044715 x^3)))
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.ConvSeparable.forward(TorchSharp.torch.Tensor)">
+            <summary>
+            Input shape: [SeqLen, BatchSize, InChannel]
+            Output shape: [SeqLen - KernelSize + 1, BatchSize, OutChannel]
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.LearnedPositionalEmbedding.forward(TorchSharp.torch.Tensor,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Input is expected to be of size [bsz x seqlen].
+            Positions should be 0-based and 0 is the padding position index.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.PositionalEmbedding.MakePositions(TorchSharp.torch.Tensor,System.Int32)">
+            <summary>
+            Replace non-padding symbols with their position numbers.
+            Position numbers begin at padTokenIndex+1. Padding symbols are ignored.
+            </summary>
+            <param name="tensor">Cannot be null.</param>
+            <param name="padTokenIndex"></param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.SinusoidalPositionalEmbedding.GetEmbedding(System.Int32,System.Int32)">
+            <summary>
+            Build sinusoidal embeddings.
+            This matches the implementation in tensor2tensor, but differs slightly
+                from the description in Section 3.5 of "Attention Is All You Need".
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.SinusoidalPositionalEmbedding.forward(TorchSharp.torch.Tensor,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Input is expected to be of size [bsz x seqlen].
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.Modules.IIncrementalState">
+            <summary>
+            Incremental state for incremental generation.
+            Refer to https://github.com/facebookresearch/fairseq/blob/main/fairseq/incremental_decoding_utils.py.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.Modules.IncrementalState">
+            <summary>
+            Incremental state for incremental generation.
+            Refer to https://github.com/facebookresearch/fairseq/blob/main/fairseq/incremental_decoding_utils.py.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.Modules.IncrementalState._global_incremental_state_id">
+            <summary>
+            To separate different modules sharing the same name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.Modules.IncrementalState._incremental_state_id">
+            <summary>
+            To separate different modules sharing the same name.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.Layers.Layer.CloseLayerNormTraining">
+            <summary>
+             Set LayerNorm layers training status. This method should be invoked after Train().
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.Layers.SelfAttentionLayer.forward(TorchSharp.torch.Tensor,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            LayerNorm is applied either before or after the self-attention/ffn modules
+                similar to the original Transformer implementation.
+            </summary>
+            <param name="x"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.MultiHeadAttention.forward(TorchSharp.torch.Tensor,TorchSharp.torch.Tensor,TorchSharp.torch.Tensor,TorchSharp.torch.Tensor@,TorchSharp.torch.Tensor,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.Dictionary{System.String,TorchSharp.torch.Tensor}},System.Boolean,System.Boolean,TorchSharp.torch.Tensor)">
+            <summary>
+            Input shape: seqLen x batch x channel
+            Time-steps can be masked by supplying a T x T mask in the <paramref name="attentionMask"/> argument.
+            Padding elements can be excluded from the key by passing a binary ByteTensor(<paramref name="keyPaddingMask"/>)
+                with shape: batch x srcLen, where padding elements are indicated by 1s.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Modules.SearchSpace.CheckHiddenDimensionsAndReturnMax(System.Int32[])">
+            <summary>
+            Check whether all hidden dimensions in hiddenList are the same (except for 0),
+                and return the maximum among them.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.Modules.TransformerCellNonDiscrete">
+            <summary>
+            Implements a Transformer Encoder Layer used in BERT/XLM style pre-trained models.
+            Non-discrete cells are used when doing NAS search.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.Modules.TransformerCellNonDiscrete.Operations">
+            <summary>
+            The operations in search space.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.Modules.TransformerCellDiscrete">
+            <summary>
+            Implements a Transformer Encoder Layer used in BERT/XLM style pre-trained models.
+            Discrete cells are used for a fixed neural architecture.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.Sentence1ColumnName">
+            <summary>
+            The first sentence column.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.Sentence2ColumnName">
+            <summary>
+            The second sentence column.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.FreezeEncoder">
+            <summary>
+            Whether to freeze encoder parameters.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.FreezeTransfer">
+            <summary>
+            Whether to freeze transfer module parameters.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.LayerNormTraining">
+            <summary>
+            Whether to train layer norm parameters.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.EncoderNormalizeBefore">
+            <summary>
+            Whether to apply layer normalization before each encoder block.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.Dropout">
+            <summary>
+            Dropout rate for general situations. Should be within [0, 1).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.AttentionDropout">
+            <summary>
+            Dropout rate for attention weights. Should be within [0, 1).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.ActivationDropout">
+            <summary>
+            Dropout rate after activation functions in FFN layers. Should be within [0, 1).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.DynamicDropout">
+            <summary>
+            Whether to use dynamic dropout.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.PoolerDropout">
+            <summary>
+            Dropout rate in the masked language model pooler layers. Should be within [0, 1).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.AdamBetas">
+            <summary>
+            Betas for Adam optimizer.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.AdamEps">
+            <summary>
+            Epsilon for Adam optimizer.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.ClipNorm">
+            <summary>
+            The clipping threshold of gradients. Should be within [0, +Inf). 0 means not to clip norm.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.WarmupRatio">
+            <summary>
+            Proportion of warmup steps for polynomial decay scheduler.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.LearningRate">
+            <summary>
+            Learning rate for the first N epochs; all epochs >N using LR_N.
+            Note: this may be interpreted differently depending on the scheduler.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.TaskType">
+            <summary>
+            Task type, which is related to the model head.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.Arches">
+            <summary>
+            The index numbers of model architecture. Fixed by the TorchSharp model.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.MaxSequenceLength">
+            <summary>
+            Maximum length of a sample. Set by the TorchSharp model.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.EmbeddingDim">
+            <summary>
+            Number of the embedding dimensions. Should be positive. Set by the TorchSharp model.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.EncoderLayers">
+            <summary>
+            Number of encoder layers. Set by the TorchSharp model.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.EncoderOutputDim">
+            <summary>
+             Number of the output dimensions of encoder. Should be positive. Set by the TorchSharp model. 3 * EmbeddingDim
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.ActivationFunction">
+            <summary>
+            The activation function to use for general situations. Set by the TorchSharp model.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.PoolerActivationFunction">
+            <summary>
+            The activation function to use for pooler layers. Set by the TorchSharp model.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions.Reduction">
+            <summary>
+            Reduction of criterion loss function. Set by the TorchSharp model.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.NerTrainer">
+             <summary>
+             The <see cref="T:Microsoft.ML.IEstimator`1"/> for training a Deep Neural Network(DNN) to classify text.
+             </summary>
+             <remarks>
+             <format type="text/markdown"><![CDATA[
+             To create this trainer, use [NER](xref:Microsoft.ML.TorchSharpCatalog.NamedEntityRecognition(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,System.String,System.String,System.String,Int32,Int32,Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)).
+            
+             ### Input and Output Columns
+             The input label column data must be a Vector of [string](xref:Microsoft.ML.Data.TextDataViewType) type and the sentence columns must be of type<xref:Microsoft.ML.Data.TextDataViewType>.
+            
+             This trainer outputs the following columns:
+            
+             | Output Column Name | Column Type | Description|
+             | -- | -- | -- |
+             | `PredictedLabel` | Vector of [key](xref:Microsoft.ML.Data.KeyDataViewType) type | The predicted label's index. If its value is i, the actual label would be the i-th category in the key-valued input label type. |
+             |  |  |
+             | -- | -- |
+             | Machine learning task | Multiclass classification |
+             | Is normalization required? | No |
+             | Is caching required? | No |
+             | Required NuGet in addition to Microsoft.ML | Microsoft.ML.TorchSharp and libtorch-cpu or libtorch-cuda-11.3 or any of the OS specific variants. |
+             | Exportable to ONNX | No |
+            
+             ### Training Algorithm Details
+             Trains a Deep Neural Network(DNN) by leveraging an existing pre-trained NAS-BERT roBERTa model for the purpose of named entity recognition.
+             ]]>
+             </format>
+             </remarks>
+            
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.Optimizers.BaseOptimizer">
+            <summary>
+            A wrapper of <seealso cref="T:TorchSharp.torch.optim.Optimizer"/> for some extra operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Optimizers.BaseOptimizer.GetOptimizer(Microsoft.ML.TorchSharp.NasBert.NasBertTrainer.NasBertOptions,System.Collections.Generic.IEnumerable{TorchSharp.Modules.Parameter})">
+            <summary>
+            Create and return an optimizer according to <paramref name="options"/>.
+            </summary>
+            <param name="options"></param>
+            <param name="parameters">The parameters to be optimized by the optimizer.</param>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Optimizers.BaseOptimizer.Step">
+            <summary>
+            Performs a single optimization step.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Optimizers.BaseOptimizer.zero_grad">
+            <summary>
+            Clears the gradients of all optimized parameters.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.NasBert.Optimizers.BaseOptimizer.MultiplyGrads(System.Double)">
+            <summary>
+            Multiplies grads by a constant
+            </summary>
+            <param name="c">the constant</param>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.SentenceSimilarityTrainer">
+             <summary>
+             Represents the <see cref="T:Microsoft.ML.IEstimator`1"/> for training a Deep Neural Network (DNN) to determine sentence similarity.
+             </summary>
+             <remarks>
+             <format type="text/markdown"><![CDATA[
+             To create this trainer, use [TextClassification](xref:Microsoft.ML.TorchSharpCatalog.TextClassification(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Int32,System.String,System.String,System.String,System.String,Int32,Int32,Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)).
+            
+             ### Input and output columns
+             The input label column data must be type <xref:System.Single> and the sentence columns must be of type <xref:Microsoft.ML.Data.TextDataViewType>.
+            
+             This trainer outputs the following columns:
+            
+             | Output column name | Column type | Description|
+             | -- | -- | -- |
+             | `Score` | <xref:System.Single> | The degree of similarity between the two sentences. |
+            
+             ### Trainer characteristics
+             | Characteristic | Value  |
+             | -- | -- |
+             | Machine learning task | Regression |
+             | Is normalization required? | No |
+             | Is caching required? | No |
+             | Required NuGet in addition to Microsoft.ML | Microsoft.ML.TorchSharp and libtorch-cpu or libtorch-cuda-11.3 or any of the OS specific variants. |
+             | Exportable to ONNX | No |
+            
+             ### Training algorithm details
+             Trains a Deep Neural Network (DNN) by leveraging an existing, pretrained NAS-BERT roBERTa model for the purpose of determining sentence similarity.
+             ]]>
+             </format>
+             </remarks>
+            
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.NasBert.TextClassificationTrainer">
+             <summary>
+             The <see cref="T:Microsoft.ML.IEstimator`1"/> for training a Deep Neural Network (DNN) to classify text.
+             </summary>
+             <remarks>
+             <format type="text/markdown"><![CDATA[
+             To create this trainer, use [TextClassification](xref:Microsoft.ML.TorchSharpCatalog.TextClassification(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Int32,System.String,System.String,System.String,System.String,Int32,Int32,Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)).
+            
+             ### Input and output columns
+             The input label column data must be [key](xref:Microsoft.ML.Data.KeyDataViewType) type and the sentence columns must be of type <xref:Microsoft.ML.Data.TextDataViewType>.
+            
+             This trainer outputs the following columns:
+            
+             | Output column name | Column type | Description|
+             | -- | -- | -- |
+             | `PredictedLabel` | [key](xref:Microsoft.ML.Data.KeyDataViewType) type | The predicted label's index. If its value is `i`, the actual label would be the `i`-th category in the key-valued input label type. |
+             | `Score` | Vector of<xref:System.Single> | The scores of all classes. Higher value means higher probability to fall into the associated class. If the `i`-th element has the largest value, the predicted label index would be `i`. Note that `i` is a zero-based index. |
+            
+             ### Trainer characteristics
+             | Characteristic | Value |
+             | -- | -- |
+             | Machine learning task | Multiclass classification |
+             | Is normalization required? | No |
+             | Is caching required? | No |
+             | Required NuGet in addition to Microsoft.ML | Microsoft.ML.TorchSharp and libtorch-cpu or libtorch-cuda-11.3 or any of the OS specific variants. |
+             | Exportable to ONNX | No |
+            
+             ### Training algorithm details
+             Trains a Deep Neural Network (DNN) by leveraging an existing, pretrained NAS-BERT roBERTa model for the purpose of classifying text.
+             ]]>
+             </format>
+             </remarks>
+            
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.Roberta.Models.RobertaModel">
+            <summary>
+            Base Roberta model without output heads.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Roberta.Models.RobertaModel.ExtractFeatures(TorchSharp.torch.Tensor)">
+            <summary>
+            Run only Encoder and return features.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Roberta.Modules.AttentionSelf.TransposeForScores(TorchSharp.torch.Tensor)">
+            <summary>
+            [B x T x C] -> [B x Head x T x C_Head]
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Roberta.QATrainer.Options.ContextColumnName">
+            <summary>
+            Context Column Name
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Roberta.QATrainer.Options.QuestionColumnName">
+            <summary>
+            Question Column Name
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Roberta.QATrainer.Options.TrainingAnswerColumnName">
+            <summary>
+            Answer Column Name for the training data
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Roberta.QATrainer.Options.PredictedAnswerColumnName">
+            <summary>
+            Answer Column Name for the predicted answers
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Roberta.QATrainer.Options.AnswerIndexStartColumnName">
+            <summary>
+            Answer Index Start Column Name
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Roberta.QATrainer.Options.TopKAnswers">
+            <summary>
+            Number of top predicted answers in question answering task.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Roberta.QATrainer.Options.LogEveryNStep">
+            <summary>
+            How often to log the loss.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.LabelColumnName">
+            <summary>
+            The label column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.ScoreColumnName">
+            <summary>
+            The Score column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.PredictionColumnName">
+            <summary>
+            The Prediction column name.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.BatchSize">
+            <summary>
+            Number of samples to use for mini-batch training.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.StartLearningRateRatio">
+            <summary>
+            The start learning rate for polynomial decay scheduler.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.FinalLearningRateRatio">
+            <summary>
+            The final learning rate for polynomial decay scheduler.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.WeightDecay">
+            <summary>
+            Coefficiency of weight decay. Should be within [0, +Inf).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.MaxEpoch">
+            <summary>
+            Stop training when reaching this number of epochs.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.ValidationSet">
+            <summary>
+            The validation set used while training to improve model quality.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.TorchSharpBaseTrainer.Options.NumberOfClasses">
+            <summary>
+            Number of classes for the data.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.TorchSharpCatalog">
+            <summary>
+            Collection of extension methods for <see cref="T:Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers" /> to create instances of TorchSharp trainer components.
+            </summary>
+            <remarks>
+            This requires additional nuget dependencies to link against TorchSharp native dlls. See <see cref="T:Microsoft.ML.Vision.ImageClassificationTrainer"/> for more information.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.TextClassification(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)">
+            <summary>
+            Fine tune a NAS-BERT model for NLP classification. The limit for any sentence is 512 tokens. Each word typically
+            will map to a single token, and we automatically add 2 specical tokens (a start token and a separator token)
+            so in general this limit will be 510 words for all sentences.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="labelColumnName">Name of the label column. Column should be a key type.</param>
+            <param name="scoreColumnName">Name of the score column.</param>
+            <param name="outputColumnName">Name of the output column. It will be a key type. It is the predicted label.</param>
+            <param name="sentence1ColumnName">Name of the column for the first sentence.</param>
+            <param name="sentence2ColumnName">Name of the column for the second sentence. Only required if your NLP classification requires sentence pairs.</param>
+            <param name="batchSize">Number of rows in the batch.</param>
+            <param name="maxEpochs">Maximum number of times to loop through your training set.</param>
+            <param name="architecture">Architecture for the model. Defaults to Roberta.</param>
+            <param name="validationSet">The validation set used while training to improve model quality.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.TextClassification(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Microsoft.ML.TorchSharp.NasBert.TextClassificationTrainer.TextClassificationOptions)">
+            <summary>
+            Fine tune a NAS-BERT model for NLP classification. The limit for any sentence is 512 tokens. Each word typically
+            will map to a single token, and we automatically add 2 specical tokens (a start token and a separator token)
+            so in general this limit will be 510 words for all sentences.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="options">Advanced Options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.SentenceSimilarity(Microsoft.ML.RegressionCatalog.RegressionTrainers,System.String,System.String,System.String,System.String,System.Int32,System.Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)">
+            <summary>
+            Fine tune a NAS-BERT model for NLP sentence Similarity. The limit for any sentence is 512 tokens. Each word typically
+            will map to a single token, and we automatically add 2 specical tokens (a start token and a separator token)
+            so in general this limit will be 510 words for all sentences.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="labelColumnName">Name of the label column. Column should be a float type.</param>
+            <param name="scoreColumnName">Name of the score column.</param>
+            <param name="sentence1ColumnName">Name of the column for the first sentence.</param>
+            <param name="sentence2ColumnName">Name of the column for the second sentence. Only required if your NLP classification requires sentence pairs.</param>
+            <param name="batchSize">Number of rows in the batch.</param>
+            <param name="maxEpochs">Maximum number of times to loop through your training set.</param>
+            <param name="architecture">Architecture for the model. Defaults to Roberta.</param>
+            <param name="validationSet">The validation set used while training to improve model quality.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.SentenceSimilarity(Microsoft.ML.RegressionCatalog.RegressionTrainers,Microsoft.ML.TorchSharp.NasBert.SentenceSimilarityTrainer.SentenceSimilarityOptions)">
+            <summary>
+            Fine tune a NAS-BERT model for NLP sentence Similarity. The limit for any sentence is 512 tokens. Each word typically
+            will map to a single token, and we automatically add 2 specical tokens (a start token and a separator token)
+            so in general this limit will be 510 words for all sentences.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="options">Advanced Options</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.ObjectDetection(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Fine tune an object detection model.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="labelColumnName">The label column name. Should be a vector of keytype</param>
+            <param name="predictedLabelColumnName">The output predicted label column name. Is a vector of keytype</param>
+            <param name="scoreColumnName">The output score column name. Is a vector of float.</param>
+            <param name="boundingBoxColumnName">The bounding box column name. Is a vector of float. Values should be in the order x0 y0 x1 y1.</param>
+            <param name="predictedBoundingBoxColumnName">The output bounding box column name. Is a vector of float. Values should be in the order x0 y0 x1 y1.</param>
+            <param name="imageColumnName">The column name holding the image Data. Is an MLImage</param>
+            <param name="maxEpoch">How many epochs to run.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.ObjectDetection(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Microsoft.ML.TorchSharp.AutoFormerV2.ObjectDetectionTrainer.Options)">
+            <summary>
+            Fine tune an object detection model.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="options">The full set of advanced options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.EvaluateObjectDetection(Microsoft.ML.MulticlassClassificationCatalog,Microsoft.ML.IDataView,Microsoft.ML.DataViewSchema.Column,Microsoft.ML.DataViewSchema.Column,Microsoft.ML.DataViewSchema.Column,Microsoft.ML.DataViewSchema.Column,Microsoft.ML.DataViewSchema.Column)">
+            <summary>
+            Evaluates scored object detection data.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="data">IDataView with the data</param>
+            <param name="labelCol">Column that has the actual labels.</param>
+            <param name="actualBoundingBoxColumn">Column that has the actual bounding boxes.</param>
+            <param name="predictedLabelCol">Column that has the predicted labels.</param>
+            <param name="predictedBoundingBoxColumn">Column that has the predicted bounding boxes.</param>
+            <param name="scoreCol">Column that has the predicted score (confidence level).</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.NameEntityRecognition(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,System.String,System.String,System.String,System.Int32,System.Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)">
+            <summary>
+            Obsolete: please use the <see cref="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.NamedEntityRecognition(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,System.String,System.String,System.String,System.Int32,System.Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)"/> method instead
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="labelColumnName">Name of the label column. Column should be a key type.</param>
+            <param name="outputColumnName">Name of the output column. It will be a key type. It is the predicted label.</param>
+            <param name="sentence1ColumnName">Name of the column for the first sentence.</param>
+            <param name="batchSize">Number of rows in the batch.</param>
+            <param name="maxEpochs">Maximum number of times to loop through your training set.</param>
+            <param name="architecture">Architecture for the model. Defaults to Roberta.</param>
+            <param name="validationSet">The validation set used while training to improve model quality.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.NameEntityRecognition(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Microsoft.ML.TorchSharp.NasBert.NerTrainer.NerOptions)">
+            <summary>
+            Obsolete: please use the <see cref="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.NamedEntityRecognition(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Microsoft.ML.TorchSharp.NasBert.NerTrainer.NerOptions)"/> method instead
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="options">The full set of advanced options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.NamedEntityRecognition(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,System.String,System.String,System.String,System.Int32,System.Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)">
+            <summary>
+            Fine tune a NAS-BERT model for Named Entity Recognition. The limit for any sentence is 512 tokens. Each word typically
+            will map to a single token, and we automatically add 2 specical tokens (a start token and a separator token)
+            so in general this limit will be 510 words for all sentences.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="labelColumnName">Name of the label column. Column should be a key type.</param>
+            <param name="outputColumnName">Name of the output column. It will be a key type. It is the predicted label.</param>
+            <param name="sentence1ColumnName">Name of the column for the first sentence.</param>
+            <param name="batchSize">Number of rows in the batch.</param>
+            <param name="maxEpochs">Maximum number of times to loop through your training set.</param>
+            <param name="architecture">Architecture for the model. Defaults to Roberta.</param>
+            <param name="validationSet">The validation set used while training to improve model quality.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.NamedEntityRecognition(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Microsoft.ML.TorchSharp.NasBert.NerTrainer.NerOptions)">
+            <summary>
+            Fine tune a Named Entity Recognition model.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="options">The full set of advanced options.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.QuestionAnswer(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,Microsoft.ML.TorchSharp.NasBert.BertArchitecture,Microsoft.ML.IDataView)">
+            <summary>
+            Fine tune a ROBERTA model for Question and Answer. The limit for any sentence is 512 tokens. Each word typically
+            will map to a single token, and we automatically add 2 specical tokens (a start token and a separator token)
+            so in general this limit will be 510 words for all sentences.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="contextColumnName">The context for the question.</param>
+            <param name="questionColumnName">The question being asked.</param>
+            <param name="trainingAnswerColumnName">The answer used to train the model.</param>
+            <param name="answerIndexColumnName">The starting character index of that answer in the context.</param>
+            <param name="predictedAnswerColumnName">The answer predicted by the model during inferencing.</param>
+            <param name="scoreColumnName">The score of the predicted answers.</param>
+            <param name="topK">How many top results you want back for a given question.</param>
+            <param name="batchSize">Number of rows in the batch.</param>
+            <param name="maxEpochs">Maximum number of times to loop through your training set.</param>
+            <param name="architecture">Architecture for the model. Defaults to Roberta.</param>
+            <param name="validationSet">The validation set used while training to improve model quality.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.TorchSharpCatalog.QuestionAnswer(Microsoft.ML.MulticlassClassificationCatalog.MulticlassClassificationTrainers,Microsoft.ML.TorchSharp.Roberta.QATrainer.Options)">
+            <summary>
+            Fine tune a ROBERTA model for Question and Answer. The limit for any sentence is 512 tokens. Each word typically
+            will map to a single token, and we automatically add 2 specical tokens (a start token and a separator token)
+            so in general this limit will be 510 words for all sentences.
+            </summary>
+            <param name="catalog">The transform's catalog.</param>
+            <param name="options">The options for QA.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Utils.DataUtils.CopyTensor(TorchSharp.torch.Tensor,TorchSharp.torch.Tensor,System.Boolean,System.Nullable{System.Int32})">
+            <summary>
+            Copy <paramref name="src"/> tensor to <paramref name="dst"/> tensor.
+            If <paramref name="moveEosToBeginning"/> is true, an EOS token will be added to the beginning
+            of <paramref name="dst"/> tensor, and the last token of <paramref name="src"/> will be dropped.
+            </summary>
+            <param name="src"></param>
+            <param name="dst"></param>
+            <param name="moveEosToBeginning"></param>
+            <param name="eosIndex"></param>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="T:Microsoft.ML.TorchSharp.Utils.DefaultDictionary`2">
+            <summary>
+            Dictionary with a default value for unseen keys.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Utils.FileUtils.LoadNumberArrayFromStream``1(System.IO.Stream,System.Int32,System.Int32)">
+            <summary>
+            Load a continuous segment of bytes from stream and parse them into a number array.
+            NOTE: this function is only for little-endian storage!
+            </summary>
+            <typeparam name="T">should be a numeric type</typeparam>
+            <param name="stream">the stream to read from its current position</param>
+            <param name="numElements">expected number of parsed numbers</param>
+            <param name="tSize">number of bytes occupied by the specified type</param>
+            <exception cref="T:System.NotSupportedException">When the generic type T is not a valid numeric type.</exception>
+            <exception cref="T:System.ArgumentException"/>
+            <exception cref="T:System.IO.InvalidDataException">When the contents in the stream don't match the need.</exception>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Utils.ImageUtils.TransformBbox(TorchSharp.torch.Tensor,TorchSharp.torch.Tensor)">
+            <summary>
+            Transform bounding boxes with delta.
+            </summary>
+            <param name="boxes">The bounding boxes to be transformed.</param>
+            <param name="deltas">The deltas in transform.</param>
+            <returns>The transformed boundbing boxes.</returns>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Utils.ImageUtils.ClipBoxes(TorchSharp.torch.Tensor,TorchSharp.torch.Tensor)">
+            <summary>
+            Clip bounding boxes inside the size of image.
+            </summary>
+            <param name="boxes">The bounding boxes to be clipped.</param>
+            <param name="img">The image to specify the bound of bounding box.</param>
+            <returns>The clipped bounding boxes.</returns>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Utils.MethodTable.ComponentSize">
+            <summary>
+            The low WORD of the first field is the component size for array and string types.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Utils.MethodTable.Flags">
+            <summary>
+            The flags for the current method table (only for not array or string types).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Utils.MethodTable.BaseSize">
+            <summary>
+            The base size of the type (used when allocating an instance on the heap).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Utils.MethodTable.InterfaceCount">
+            <summary>
+            The number of interfaces implemented by the current type.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Utils.MethodTable.ParentMethodTable">
+            <summary>
+            A pointer to the parent method table for the current one.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Utils.MethodTable.ElementType">
+            <summary>
+            This element type handle is in a union with additional info or a pointer to the interface map.
+            Which one is used is based on the specific method table being in used (so this field is not
+            always guaranteed to actually be a pointer to a type handle for the element type of this type).
+            </summary>
+        </member>
+        <member name="F:Microsoft.ML.TorchSharp.Utils.MethodTable.InterfaceMap">
+            <summary>
+            This interface map is a union with a multipurpose slot, so should be checked before use.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ML.TorchSharp.Utils.MetricUtils.ComputeTopKSpansWithScore(TorchSharp.torch.Tensor,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Get top k answer spans for QA task.
+            </summary>
+            <param name="logits">Model output logits</param>
+            <param name="k">Number of highest scores</param>
+            <param name="input0Len"></param>
+            <param name="input1Len"></param>
+        </member>
+    </members>
+</doc>
